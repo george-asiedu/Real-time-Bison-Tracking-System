@@ -21,6 +21,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-@app.get("/")
+@app.get(
+    "/",
+    tags=["App"],
+    summary="Application base route"
+)
 async def root():
     return {"message": messages["welcome"]}
