@@ -2,3 +2,6 @@ fastapi[standard]
 beanie
 motor>=3.0.0
 pydantic_settings
+ultralytics
+opencv-python-headless
+numpy
