@@ -2,6 +2,7 @@ from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.core.constants import messages
 from app.core.config import get_settings
+from .bison_model import BisonFrame
 
 mongo_client = None
 settings = get_settings()
@@ -28,5 +29,5 @@ async def init_db():
 
     await init_beanie(
         database=database,
-        document_models=[]
+        document_models=[BisonFrame]
     )
