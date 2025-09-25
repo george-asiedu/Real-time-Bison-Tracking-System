@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from pydantic import Field, BaseModel
 from typing import Annotated, List
 
-class BindingBox(BaseModel):
+class BoundingBox(BaseModel):
     x1: float
     y1: float
     x2: float
@@ -12,12 +12,12 @@ class BindingBox(BaseModel):
 class BisonDetection(BaseModel):
     track_id: int | None = None
     confidence: float
-    box: BindingBox
+    box: BoundingBox
 
 
 class BisonFrame(Document):
     bison_count: int
-    directions: List[BisonDetection]
+    detections: List[BisonDetection]
     timestamp: Annotated[datetime, Indexed()] = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Settings:
