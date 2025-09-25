@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from app.core.constants import messages
 from app.database.db_connection import init_db
 from app.core.logger import logger
+from app.bison_tracker.tracker_router import router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,3 +29,5 @@ app = FastAPI(
 )
 async def root():
     return {"message": messages["welcome"]}
+
+app.include_router(router, prefix="/api")
