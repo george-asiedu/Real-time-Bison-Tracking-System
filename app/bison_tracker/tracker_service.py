@@ -1,33 +1,19 @@
 import cv2
 import asyncio
-from ultralytics import YOLO
 from datetime import datetime, timezone
 from app.core.config import get_settings
 from app.core.logger import logger
 from app.core.constants import messages
 from app.database.bison_model import BisonFrame, BoundingBox, BisonDetection
-from pathlib import Path
+from app.yolo_utils import load_model_file
 
 settings = get_settings()
-try:
-    BASE_DIR = Path(__file__).resolve().parent.parent.parent
-except NameError:
-    BASE_DIR = Path.cwd()
 
 
 class BisonTrackerService:
     def __init__(self):
         self.is_running = False
-        self.model = None
-        try:
-            model_path = BASE_DIR
-            if not model_path.exists():
-                logger.critical(f"Model file not found at resolved path: {model_path}")
-            else:
-                self.model = YOLO(model_path)
-                logger.info(f"Successfully loaded YOLO model from: {model_path}")
-        except Exception as e:
-            logger.critical(f"{messages['model_failed']} {e}")
+        self.model = load_model_file()
 
 
     async def start(self):
@@ -66,7 +52,7 @@ class BisonTrackerService:
                 if not ret:
                     logger.error(messages["stream_ended"])
                     cap.release()
-                    await asyncio.sleep(3)
+                    await asyncio.sleep(5)
                     cap = cv2.VideoCapture(settings.RTSP_URL)
                     if not cap.isOpened():
                         logger.error("Failed to reconnect to the stream. Stopping service.")
