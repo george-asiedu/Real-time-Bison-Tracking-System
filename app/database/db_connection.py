@@ -1,19 +1,20 @@
 from beanie import init_beanie
-from dotenv import load_dotenv
-import os
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.core.constants import messages
+from app.core.config import get_settings
 
 mongo_client = None
+settings = get_settings()
 
 async def init_db():
     global mongo_client
-    load_dotenv()
-    db_connection_string = os.getenv(messages["DB_ENV"])
-    db_name = messages["MONGO_DB_NAME"]
+    db_connection_string = settings.MONGO_URI
+    db_name = settings.DB_NAME
 
     if not db_connection_string:
         raise ValueError(messages["db_connection_error"])
+    if not db_name:
+        raise ValueError(messages["db_name_error"])
 
     mongo_client = AsyncIOMotorClient(
         db_connection_string,
