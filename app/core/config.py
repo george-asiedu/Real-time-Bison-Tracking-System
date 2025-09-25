@@ -4,6 +4,7 @@ from functools import lru_cache
 class Settings(BaseSettings):
     ENVIRONMENT: str = 'development'
     MONGO_URI: str
+    DB_NAME: str
 
     model_config = SettingsConfigDict(
         env_file='.env',
