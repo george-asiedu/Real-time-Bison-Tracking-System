@@ -5,7 +5,7 @@ from app.database.bison_model import BisonFrame
 from typing import List
 from datetime import datetime, timedelta, timezone
 
-router = APIRouter(prefix="/tracker", tags=["Tracker"])
+router = APIRouter(prefix="/tracker", tags=["Bison Tracker"])
 
 @router.post('/start', status_code=202)
 async def start_tracker(background_task: BackgroundTasks):
